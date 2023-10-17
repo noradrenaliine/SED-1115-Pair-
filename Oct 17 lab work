@@ -1,0 +1,21 @@
+#create (write) pwm signal on Pico A
+#send said signal to Pico B
+#interpret signal (at pico b)
+#send back (to pico a)
+
+import serial
+import machine
+from machine import Pin
+from machine import UART
+
+uart = UART(1, 9600, tx+Pin(8), rx=Pin(9))
+uart.init(9600, bits=8, parity=None, stop=1)
+
+#eesablishes pwm output
+pwm_pin = machine.Pin(8)  
+pwm = machine.PWM(pwm_pin)  
+pwm.freq(1000)  # Set PWM frequency to be sent to Pico B, on pin 8
+pwm.duty(512) #1023 = 100% so 512 = 50%
+
+#sends pwm signal continuously
+while True:
